@@ -52,9 +52,9 @@
                 extended_layer {
                         label = "EXTEND";
                         bindings = <
-   &none  &kp F1 &kp F2 &kp F3 &kp F4     &kp F5        &kp F6 &kp F7   &kp F8    &kp F9    &kp F10   &none
-   &none  &none  &none  &none  &none      &none         &none  &kp LEFT &kp DOWN  &kp UP    &kp RIGHT &none
-   &none  &none  &none  &none  &none      &none         &none  &kp HOME &kp PG_DN &kp PG_UP &kp END   &none
+   &none  &kp F1 &kp F2 &kp F3 &kp F4     &kp F5        &kp F6   &kp F7    &kp F8    &kp F9    &kp F10 &none
+   &none  &none  &none  &none  &none      &none         &kp LEFT &kp DOWN  &kp UP    &kp RIGHT &none   &none
+   &none  &none  &none  &none  &none      &none         &kp HOME &kp PG_DN &kp PG_UP &kp END   &none   &none
                         &none  &mo FUNKEY &kp RET       &none  &none  &none
                         >;
                 };
