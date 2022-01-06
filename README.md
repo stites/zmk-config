@@ -1,3 +1,5 @@
+forked from https://github.com/LOWPROKB/zmk-config-Corne-ish-Zen
+
 # Corne-ish Zen Custom Configuration
 
 ![Corne-ish Zen Logo](zenlogo.png)
