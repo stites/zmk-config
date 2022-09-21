@@ -53,7 +53,7 @@
             key-positions = <16 31 28>; // thd -> thread
             bindings = <&kp T &kp H &kp R &kp E &kp A &kp D>;
         };
-        combo_thread {
+        combo_zet {
             timeout-ms = <50>;
             key-positions = <25 20 16>; // zet -> zettelkasten
             bindings = <&kp Z &kp E &kp T &kp T &kp E &kp L &kp K &kp A &kp S &kp T &kp E &kp N>;
