@@ -26,15 +26,47 @@
             bindings = <&kp>, <&kp>;
         };
     };
+    combos {
+        compatible = "zmk,combos";
+        combo_marginal {
+            timeout-ms = <50>;
+            key-positions = <18 13 14 17>; // marg -> marginal
+            bindings = <&kp M &kp A &kp R &kp G &kp I &kp N &kp A &kp L>;
+        };
+        combo_collapsed {
+            timeout-ms = <50>;
+            key-positions = <27 22 7>; // col -> collapsed
+            bindings = <&kp C &kp O &kp L &kp L &kp A &kp P &kp S &kp E &kp D>;
+        };
+        combo_manager {
+            timeout-ms = <50>;
+            key-positions = <18 17 14>; // mgr -> manager
+            bindings = <&kp M &kp A &kp N &kp A &kp G &kp E &kp R>;
+        };
+        combo_thread {
+            timeout-ms = <50>;
+            key-positions = <16 31 28>; // thd -> thread
+            bindings = <&kp T &kp H &kp R &kp E &kp A &kp D>;
+        };
+        combo_thread {
+            timeout-ms = <50>;
+            key-positions = <25 20 16>; // zet -> zettelkasten
+            bindings = <&kp Z &kp E &kp T &kp T &kp E &kp L &kp K &kp A &kp S &kp T &kp E &kp N>;
+        };
+    };
     keymap {
                 compatible = "zmk,keymap";
 
                 default_layer {
                         label = "COLMAK";
                         bindings = <
+   //  0          1          2           3            4      5            6              7           8          9         10    11
    &none &kp      Q &kp      W &kp       F &kp        P  &kp B        &kp J   &kp        L &kp       U &kp      Y &kp   SEMI &none
+   // 12         13         14          15           16     17           18             19          20         21         22    23
    &none &hm LGUI A &hm LALT R &hm LCTRL S &hm LSHIFT T  &kp G        &kp M   &hm RSHIFT N &hm RCTRL E &hm RALT I &hm RGUI O &none
+   // 24         25         26          27           28     29           30             31          32         33         34    35
    &none &kp      Z &kp      X &kp       C &kp        D  &kp V        &kp K   &kp        H &kp    CMMA &kp    DOT &kp   FSLH &none
+                                //   36            37         38           39         40            41
                                 &kp ESC    &mo NUMSYM    &kp SPC      &kp SPC &mo EXTEND   &kp    BSPC
                         >;
                 };
