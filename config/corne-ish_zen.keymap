@@ -34,18 +34,18 @@
         };
     };
     macros {
-        test1 : test1 {
-            compatible = "zmk,behavior-macro";
-            label = "test1";
-            #binding-cells = <0 12>;
-            wait-ms = <30>;
-            tap-ms = <40>;
-            bindings = <&kp Z &kp E &kp T &kp T &kp E &kp L &kp K &kp A &kp S &kp T &kp E &kp N>;
-        };
+        // test1 : test1 {
+        //     compatible = "zmk,behavior-macro";
+        //     label = "test1";
+        //     #binding-cells = <0 12>;
+        //     wait-ms = <30>;
+        //     tap-ms = <40>;
+        //     bindings = <&kp Z &kp E &kp T &kp T &kp E &kp L &kp K &kp A &kp S &kp T &kp E &kp N>;
+        // };
         test2 : test2 {
             compatible = "zmk,behavior-macro";
             label = "test2";
-            #binding-cells = <1  2>;
+            #binding-cells = <0>;
             wait-ms = <30>;
             tap-ms = <40>;
             bindings = <&kp Z &kp E &kp T &kp T &kp E &kp L &kp K &kp A &kp S &kp T &kp E &kp N>;
