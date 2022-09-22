@@ -54,7 +54,7 @@
 
         // chording
         COMBO(marg    , 18 13 14 17, &marginal)      // marg -> marginal
-        COMBO(col     ,     27 22 7, &collapsed)     // col  -> collapsed
+        COMBO(col     ,    27 22  7, &collapsed)     // col  -> collapsed
         COMBO(mgr     ,    18 17 14, &manager)       // mgr  -> manager
         COMBO(thd     ,    16 31 28, &thread)        // thd -> thread
         COMBO(zet     ,    25 20 16, &zettelkasten)  // zet -> zettelkasten
