@@ -20,14 +20,15 @@
       bindings = <SEQ>; \
   };
 #define MACRO(NAME, SEQ) \
-    NAME: NAME { \
-        compatible = "zmk,behavior-macro"; \
-        label = "ZM_##NAME"; \
-        #binding-cells = <0>; \
-        wait-ms = <20>; \
-        tap-ms = <20>; \
-        bindings = <SEQ>; \
-    };
+	NAME: NAME { \
+			label = ZMK_MACRO_STRINGIFY(ZM_ ## NAME); \
+			compatible = "zmk,behavior-macro"; \
+			#binding-cells = <0>; \
+      wait-ms = <20>; \
+      tap-ms = <20>; \
+      bindings = <SEQ>; \
+  };
+
 
 / {
     behaviors {
@@ -58,7 +59,7 @@
         COMBO(mgr     ,    18 17 14, &manager)       // mgr  -> manager
         COMBO(thd     ,    16 31 28, &thread)        // thd -> thread
         COMBO(zet     ,    25 20 16, &zettelkasten)  // zet -> zettelkasten
-    };
+    }; tbhgthgtthdthreadzetthreadztemgrthread
     keymap {
         compatible = "zmk,keymap";
         default_layer {
