@@ -13,6 +13,13 @@
 #define NUMSYM 1
 #define EXTEND 2
 #define FUNKEY 3
+#define COMBO(NAME, KEYPOS, SEQ) \
+  combo_##NAME { \
+      timeout-ms = <50>; \
+      key-positions = <KEYPOS>; \
+      bindings = <SEQ>; \
+  };
+
 
 / {
     behaviors {
@@ -28,43 +35,20 @@
     };
     combos {
         compatible = "zmk,combos";
-        combo_ctrl_r {
-            timeout-ms = <50>;
-            key-positions = <37 14>; // ctrl-r substitution because of home-row-mods
-            bindings = <&kp LC(R)>;
-        };
-        combo_marginal {
-            timeout-ms = <50>;
-            key-positions = <18 13 14 17>; // marg -> marginal
-            bindings = <&kp M &kp A &kp R &kp G &kp I &kp N &kp A &kp L>;
-        };
-        combo_collapsed {
-            timeout-ms = <50>;
-            key-positions = <27 22 7>; // col -> collapsed
-            bindings = <&kp C &kp O &kp L &kp L &kp A &kp P &kp S &kp E &kp D>;
-        };
-        combo_manager {
-            timeout-ms = <50>;
-            key-positions = <18 17 14>; // mgr -> manager
-            bindings = <&kp M &kp A &kp N &kp A &kp G &kp E &kp R>;
-        };
-        combo_thread {
-            timeout-ms = <50>;
-            key-positions = <16 31 28>; // thd -> thread
-            bindings = <&kp T &kp H &kp R &kp E &kp A &kp D>;
-        };
-        combo_zet {
-            timeout-ms = <50>;
-            key-positions = <25 20 16>; // zet -> zettelkasten
-            bindings = <&kp Z &kp E &kp T &kp T &kp E &kp L &kp K &kp A &kp S &kp T &kp E &kp N>;
-        };
+        COMBO(ctrl_r      ,       37 14, &kp LC(R))                                                                // ctrl-r substitution because of home-row-mods
+        // COMBO(marginal    , 18 13 14 17, &kp M &kp A &kp R &kp G &kp I &kp N &kp A &kp L)                          // marg -> marginal
+        // COMBO(collapsed   ,     27 22 7, &kp C &kp O &kp L &kp L &kp A &kp P &kp S &kp E &kp D)                    // col  -> collapsed
+        // COMBO(manager     ,    18 17 14, &kp M &kp A &kp N &kp A &kp G &kp E &kp R)                                // mgr  -> manager
+        // COMBO(thread      ,    16 31 28, &kp T &kp H &kp R &kp E &kp A &kp D)                                      // thd -> thread
+        // COMBO(zettelkasten,    25 20 16, &kp Z &kp E &kp T &kp T &kp E &kp L &kp K &kp A &kp S &kp T &kp E &kp N)  // zet -> zettelkasten
+        COMBO(test1       ,        0 12, &kp Z &kp E &kp T &kp T &kp E &kp L &kp K &kp A &kp S &kp T &kp E &kp N)  // zet -> zettelkasten
+        COMBO(test2       ,        1  2, &kp Z &kp E &kp T &kp T &kp E &kp L &kp K &kp A &kp S &kp T &kp E &kp N)  // zet -> zettelkasten
     };
     keymap {
-                compatible = "zmk,keymap";
-
-                default_layer {
-                        label = "COLMAK";
-                        bindings = <
+        compatible = "zmk,keymap";
+        default_layer {
+            label = "COLMAK";
+            bindings = <
    //  0          1          2           3            4      5            6              7           8          9         10    11
    &none &kp      Q &kp      W &kp       F &kp        P  &kp B        &kp J   &kp        L &kp       U &kp      Y &kp   SEMI &none
    // 12         13         14          15           16     17           18             19          20         21         22    23
@@ -73,37 +57,37 @@
    &none &kp      Z &kp      X &kp       C &kp        D  &kp V        &kp K   &kp        H &kp    CMMA &kp    DOT &kp   FSLH &none
                                 //   36            37         38           39         40            41
                                 &kp ESC    &mo NUMSYM    &kp SPC      &kp SPC &mo EXTEND   &kp    BSPC
-                        >;
-                };
+            >;
+        };
 
-                numsym_layer {
-                        label = "NUMSYM";
-                        bindings = <
+        numsym_layer {
+            label = "NUMSYM";
+            bindings = <
    &none &kp   N1 &kp   N2 &kp    N3 &kp     N4 &kp N5       &kp N6  &kp N7     &kp N8    &kp N9    &kp N0     &none
    &none &kp LGUI &kp LALT &kp LCTRL &kp LSHIFT &kp TAB      &none   &kp RSHIFT &kp LBKT  &kp RBKT  &kp GRAVE &none
    &none &none    &none    &none     &none      &none        &none   &kp SQT    &kp MINUS &kp EQUAL &kp BSLH  &none
                            &none     &none      &kp RET      &kp RET &mo FUNKEY &kp DEL
-                        >;
-                };
+            >;
+        };
 
-                extended_layer {
-                        label = "EXTEND";
-                        bindings = <
+        extended_layer {
+            label = "EXTEND";
+            bindings = <
    &none  &kp F1 &kp F2 &kp F3 &kp F4     &kp F5        &kp F6   &kp F7    &kp F8    &kp F9    &kp F10 &none
    &none  &none  &none  &none  &none      &none         &kp LEFT &kp DOWN  &kp UP    &kp RIGHT &none   &none
    &none  &none  &none  &none  &none      &none         &kp HOME &kp PG_DN &kp PG_UP &kp END   &none   &none
                         &none  &mo FUNKEY &kp RET       &none  &none  &none
-                        >;
-                };
+            >;
+        };
 
-                function_layer {
-                        label = "FUNKEY";
-                        bindings = <
+        function_layer {
+            label = "FUNKEY";
+            bindings = <
    &none  &kp F1 &kp F2 &kp F3       &kp F4   &kp F5    &kp F6 &kp F7 &kp F8 &kp F9 &kp F10 &none
    &none  &none  &reset &bootloader  &none    &none     &none  &none  &none  &none  &none   &none
    &none  &none  &none  &none        &none    &none     &none  &none  &none  &none  &none   &none
                         &none        &none    &none     &none  &none  &none
-                        >;
-                };
+            >;
         };
+    };
 };
