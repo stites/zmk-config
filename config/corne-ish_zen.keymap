@@ -19,16 +19,22 @@
       key-positions = <KEYPOS>; \
       bindings = <SEQ>; \
   };
+#define MACRO_STRINGIFY(x) #x
 #define MACRO(NAME, SEQ) \
 	NAME: NAME { \
-			label = ZMK_MACRO_STRINGIFY(ZM_ ## NAME); \
+			label = MACRO_STRINGIFY(ZM_ ## NAME); \
 			compatible = "zmk,behavior-macro"; \
 			#binding-cells = <0>; \
       wait-ms = <20>; \
       tap-ms = <20>; \
       bindings = <SEQ>; \
   };
-
+// future macropad ideas:
+// - emacs-everywhere
+// - copy/paste
+// - open terminal?
+// - org-capture from anywhere?
+// - open org-agenda?
 
 / {
     behaviors {
@@ -59,7 +65,7 @@
         COMBO(mgr     ,    18 17 14, &manager)       // mgr  -> manager
         COMBO(thd     ,    16 31 28, &thread)        // thd -> thread
         COMBO(zet     ,    25 20 16, &zettelkasten)  // zet -> zettelkasten
-    }; tbhgthgtthdthreadzetthreadztemgrthread
+    };
     keymap {
         compatible = "zmk,keymap";
         default_layer {
