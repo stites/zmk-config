@@ -19,7 +19,15 @@
       key-positions = <KEYPOS>; \
       bindings = <SEQ>; \
   };
-
+#define MACRO(NAME, SEQ) \
+    NAME: NAME { \
+        compatible = "zmk,behavior-macro"; \
+        label = "ZM_##NAME"; \
+        #binding-cells = <0>; \
+        wait-ms = <20>; \
+        tap-ms = <20>; \
+        bindings = <SEQ>; \
+    };
 
 / {
     behaviors {
@@ -34,22 +42,22 @@
         };
     };
     macros {
-        ZMK_MACRO(zettelkasten,
-            wait-ms = <30>;
-            tap-ms = <40>;
-            bindings = <&kp Z &kp E &kp T &kp T &kp E &kp L &kp K &kp A &kp S &kp T &kp E &kp N>;
-        )
+        MACRO(zettelkasten, &kp Z &kp E &kp T &kp T &kp E &kp L &kp K &kp A &kp S &kp T &kp E &kp N)
+        MACRO(marginal    , &kp M &kp A &kp R &kp G &kp I &kp N &kp A &kp L)
+        MACRO(collapsed   , &kp C &kp O &kp L &kp L &kp A &kp P &kp S &kp E &kp D)
+        MACRO(manager     , &kp M &kp A &kp N &kp A &kp G &kp E &kp R)
+        MACRO(thread      , &kp T &kp H &kp R &kp E &kp A &kp D)
     };
     combos {
         compatible = "zmk,combos";
-        COMBO(ctrl_r      ,       37 14, &kp LC(R))                                                                // ctrl-r substitution because of home-row-mods
-        // COMBO(marginal    , 18 13 14 17, &kp M &kp A &kp R &kp G &kp I &kp N &kp A &kp L)                          // marg -> marginal
-        // COMBO(collapsed   ,     27 22 7, &kp C &kp O &kp L &kp L &kp A &kp P &kp S &kp E &kp D)                    // col  -> collapsed
-        // COMBO(manager     ,    18 17 14, &kp M &kp A &kp N &kp A &kp G &kp E &kp R)                                // mgr  -> manager
-        // COMBO(thread      ,    16 31 28, &kp T &kp H &kp R &kp E &kp A &kp D)                                      // thd -> thread
-        COMBO(zettelkasten,    25 20 16, &zettelkasten)  // zet -> zettelkasten
-        COMBO(test1       ,        0 12, &zettelkasten)  // zet -> zettelkasten
-        COMBO(test2       ,        1  2, &zettelkasten)  // zet -> zettelkasten
+        COMBO(ctrl_r  ,       37 14, &kp LC(R))      // ctrl-r substitution because of home-row-mods
+
+        // chording
+        COMBO(marg    , 18 13 14 17, &marginal)      // marg -> marginal
+        COMBO(col     ,     27 22 7, &collapsed)     // col  -> collapsed
+        COMBO(mgr     ,    18 17 14, &manager)       // mgr  -> manager
+        COMBO(thd     ,    16 31 28, &thread)        // thd -> thread
+        COMBO(zet     ,    25 20 16, &zettelkasten)  // zet -> zettelkasten
     };
     keymap {
         compatible = "zmk,keymap";
