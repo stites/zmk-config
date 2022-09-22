@@ -34,35 +34,23 @@
         };
     };
     macros {
-        // test1 : test1 {
-        //     compatible = "zmk,behavior-macro";
-        //     label = "test1";
-        //     #binding-cells = <0 12>;
-        //     wait-ms = <30>;
-        //     tap-ms = <40>;
-        //     bindings = <&kp Z &kp E &kp T &kp T &kp E &kp L &kp K &kp A &kp S &kp T &kp E &kp N>;
-        // };
-        test2 : test2 {
-            compatible = "zmk,behavior-macro";
-            label = "test2";
-            #binding-cells = <0>;
+        ZMK_MACRO(zettelkasten,
             wait-ms = <30>;
             tap-ms = <40>;
             bindings = <&kp Z &kp E &kp T &kp T &kp E &kp L &kp K &kp A &kp S &kp T &kp E &kp N>;
-        };
+        )
     };
-    // combos are only for one key at a time!!!
-    // combos {
-    //     compatible = "zmk,combos";
-    //     COMBO(ctrl_r      ,       37 14, &kp LC(R))                                                                // ctrl-r substitution because of home-row-mods
-    //     // COMBO(marginal    , 18 13 14 17, &kp M &kp A &kp R &kp G &kp I &kp N &kp A &kp L)                          // marg -> marginal
-    //     // COMBO(collapsed   ,     27 22 7, &kp C &kp O &kp L &kp L &kp A &kp P &kp S &kp E &kp D)                    // col  -> collapsed
-    //     // COMBO(manager     ,    18 17 14, &kp M &kp A &kp N &kp A &kp G &kp E &kp R)                                // mgr  -> manager
-    //     // COMBO(thread      ,    16 31 28, &kp T &kp H &kp R &kp E &kp A &kp D)                                      // thd -> thread
-    //     // COMBO(zettelkasten,    25 20 16, &kp Z &kp E &kp T &kp T &kp E &kp L &kp K &kp A &kp S &kp T &kp E &kp N)  // zet -> zettelkasten
-    //     COMBO(test1       ,        0 12, &kp Z &kp E &kp T &kp T &kp E &kp L &kp K &kp A &kp S &kp T &kp E &kp N)  // zet -> zettelkasten
-    //     COMBO(test2       ,        1  2, &kp Z &kp E &kp T &kp T &kp E &kp L &kp K &kp A &kp S &kp T &kp E &kp N)  // zet -> zettelkasten
-    // };
+    combos {
+        compatible = "zmk,combos";
+        COMBO(ctrl_r      ,       37 14, &kp LC(R))                                                                // ctrl-r substitution because of home-row-mods
+        // COMBO(marginal    , 18 13 14 17, &kp M &kp A &kp R &kp G &kp I &kp N &kp A &kp L)                          // marg -> marginal
+        // COMBO(collapsed   ,     27 22 7, &kp C &kp O &kp L &kp L &kp A &kp P &kp S &kp E &kp D)                    // col  -> collapsed
+        // COMBO(manager     ,    18 17 14, &kp M &kp A &kp N &kp A &kp G &kp E &kp R)                                // mgr  -> manager
+        // COMBO(thread      ,    16 31 28, &kp T &kp H &kp R &kp E &kp A &kp D)                                      // thd -> thread
+        COMBO(zettelkasten,    25 20 16, &zettelkasten)  // zet -> zettelkasten
+        COMBO(test1       ,        0 12, &zettelkasten)  // zet -> zettelkasten
+        COMBO(test2       ,        1  2, &zettelkasten)  // zet -> zettelkasten
+    };
     keymap {
         compatible = "zmk,keymap";
         default_layer {
