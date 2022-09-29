@@ -26,16 +26,6 @@
     bindings = <SEQ>; \
   )
 
-// #define MACRO_STRINGIFY(x) #x
-// #define MACRO(NAME, SEQ) \
-// 	NAME: NAME { \
-// 			label = MACRO_STRINGIFY(ZM_ ## NAME); \
-// 			compatible = "zmk,behavior-macro"; \
-// 			#binding-cells = <0>; \
-//       wait-ms = <20>; \
-//       tap-ms = <20>; \
-//       bindings = <SEQ>; \
-//   };
 // future macropad ideas:
 // - emacs-everywhere
 // - copy/paste
@@ -112,9 +102,9 @@
         function_layer {
             label = "FUNKEY";
             bindings = <
-   &none  &kp F1 &kp F2 &kp F3       &kp F4   &kp F5    &kp F6 &kp F7 &kp F8 &kp F9 &kp F10 &none
-   &none  &none  &reset &bootloader  &none    &none     &none  &none  &none  &none  &none   &none
-   &none  &none  &none  &none        &none    &none     &none  &none  &none  &none  &none   &none
+   &none      &kp F1       &kp F2       &kp F3       &kp F4       &kp F5        &kp F6 &kp F7 &kp F8 &kp F9 &kp F10 &none
+   &bt BT_CLR &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4  &none  &none  &none  &none  &none   &none
+   &none      &none        &none        &none        &none        &none         &none  &none  &none  &none  &none   &none
                         &none        &none    &none     &none  &none  &none
             >;
         };
