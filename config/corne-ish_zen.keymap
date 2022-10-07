@@ -68,12 +68,12 @@
         default_layer {
             label = "COLMAK";
             bindings = <
-   //  0          1          2           3            4      5            6              7           8          9         10    11
-   &none &kp      Q &kp      W &kp       F &kp        P  &kp B        &kp J   &kp        L &kp       U &kp      Y &kp   SEMI &none
-   // 12         13         14          15           16     17           18             19          20         21         22    23
-   &none &hm LGUI A &hm LALT R &hm LCTRL S &hm LSHIFT T  &kp G        &kp M   &hm RSHIFT N &hm RCTRL E &hm RALT I &hm RGUI O &none
-   // 24         25         26          27           28     29           30             31          32         33         34    35
-   &none &kp      Z &kp      X &kp       C &kp        D  &kp V        &kp K   &kp        H &kp    CMMA &kp    DOT &kp   FSLH &none
+   //      0          1          2           3            4      5            6              7           8          9         10         11
+   &kp   F21 &kp      Q &kp      W &kp       F &kp        P  &kp B        &kp J   &kp        L &kp       U &kp      Y &kp   SEMI  &kp   F23
+   //     12         13         14          15           16     17           18             19          20         21         22         23
+   &kp   F22 &hm LGUI A &hm LALT R &hm LCTRL S &hm LSHIFT T  &kp G        &kp M   &hm RSHIFT N &hm RCTRL E &hm RALT I &hm RGUI O  &kp   F24
+   //     24         25         26          27           28     29           30             31          32         33         34         35
+   &kp K_APP &kp      Z &kp      X &kp       C &kp        D  &kp V        &kp K   &kp        H &kp    CMMA &kp    DOT &kp   FSLH  &kp PSCRN
                                 //   36            37         38           39         40            41
                                 &kp ESC    &mo NUMSYM    &kp SPC      &kp SPC &mo EXTEND   &kp    BSPC
             >;
@@ -82,9 +82,9 @@
         numsym_layer {
             label = "NUMSYM";
             bindings = <
-   &none &kp   N1 &kp   N2 &kp    N3 &kp     N4 &kp N5       &kp N6  &kp N7     &kp N8    &kp N9    &kp N0     &none
-   &none &kp LGUI &kp LALT &kp LCTRL &kp LSHIFT &kp TAB      &none   &kp RSHIFT &kp LBKT  &kp RBKT  &kp GRAVE &none
-   &none &none    &none    &none     &none      &none        &none   &kp SQT    &kp MINUS &kp EQUAL &kp BSLH  &none
+   &kp K_WWW          &kp   N1 &kp   N2 &kp    N3 &kp     N4 &kp N5       &kp N6  &kp N7     &kp N8    &kp N9    &kp N0    &none
+   &kp C_AL_PREV_TASK &kp LGUI &kp LALT &kp LCTRL &kp LSHIFT &kp TAB      &none   &kp RSHIFT &kp LBKT  &kp RBKT  &kp GRAVE &kp C_AL_NEXT_TASK
+   &kp C_AL_WORD      &none    &none    &none     &none      &none        &none   &kp SQT    &kp MINUS &kp EQUAL &kp BSLH  &none
                            &none     &none      &kp RET      &kp RET &mo FUNKEY &kp DEL
             >;
         };
@@ -102,9 +102,9 @@
         function_layer {
             label = "FUNKEY";
             bindings = <
-   &none      &kp F1       &kp F2       &kp F3       &kp F4       &kp F5        &kp F6 &kp F7 &kp F8 &kp F9 &kp F10 &none
-   &bt BT_CLR &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4  &none  &none  &none  &none  &none   &none
-   &none      &none        &none        &none        &none        &none         &none  &none  &none  &none  &none   &none
+   &kp C_AL_LOCK  &kp F1       &kp F2       &kp F3       &kp F4       &kp F5        &kp F6 &kp F7 &kp F8 &kp F9 &kp F10 &kp F11
+   &kp K_SLEEP    &none        &none        &none        &none        &none         &none  &none  &none  &none  &none   &kp F12
+   &bt BT_CLR     &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4  &none  &none  &none  &none  &none   &none
                         &none        &none    &none     &none  &none  &none
             >;
         };
