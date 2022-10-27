@@ -28,7 +28,9 @@ jobs:
             ${{ runner.os }}-build-
             ${{ runner.os }}-
       - name: Get CMake
-        uses: symbitic/install-cmake@master
+        run: |
+          sudo apt-get -y install cmake
+          which cmake
       - name: West Init
         run: west init -l config
       - name: West Update
