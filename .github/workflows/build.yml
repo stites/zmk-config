@@ -6,7 +6,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: zmkfirmware/zmk-build-arm:2.5
+      image: zmkfirmware/zmk-dev-arm:3.0-branch
     name: Build
     steps:
       - name: Checkout
@@ -27,10 +27,6 @@ jobs:
             ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
-      - name: Get CMake
-        run: |
-          sudo apt-get -y install cmake
-          which cmake
       - name: West Init
         run: west init -l config
       - name: West Update
