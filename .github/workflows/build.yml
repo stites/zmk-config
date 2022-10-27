@@ -27,6 +27,8 @@ jobs:
             ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
+      - name: Get CMake
+        uses: symbitic/install-cmake@master
       - name: West Init
         run: west init -l config
       - name: West Update
