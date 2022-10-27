@@ -11,11 +11,16 @@ zen: $(STEPDIR)/prebuild $(STEPDIR)/zen-left $(STEPDIR)/zen-right
 .PHONY: $(ZEN_STEPS) zen init zen-shield
 $(ZEN_STEPS): %: $(STEPDIR)/%
 
-$(STEPDIR)/prebuild:
+# use this if starting from a fresh repo
+$(STEPDIR)/init:
+	mkdir -p $(STEPDIR)
+	west init -l config
+	@touch $@
+
+$(STEPDIR)/prebuild: $(STEPDIR)/init
 	@echo "updating west, you may have to make init if you see an error"
 	west update
 	west zephyr-export
-	mkdir -p $(STEPDIR)
 	@touch $@
 
 zen-shield: $(STEPDIR)/prebuild
@@ -31,10 +36,6 @@ $(STEPDIR)/zen-left: $(STEPDIR)/prebuild
 $(STEPDIR)/zen-right: $(STEPDIR)/zen-left
 	make SIDE=right zen-shield
 
-# use this if starting from a fresh repo
-init:
-	west init -l config
-
 # use this if you want stats from your board
 report:
 	@echo "DTS file"
@@ -42,3 +43,10 @@ report:
 	@echo "Corne-ish Zen Left Kconfig file"
 	cat build/zephyr/.config | grep -v "^#" | grep -v "^$"
 	make zen-right
+
+clean:
+	rm $(STEPDIR)/prebuild $(STEPDIR)/zen-left $(STEPDIR)/zen-right
+
+clean-all:
+	git clean -f -e .envrc -e .direnv -d -x
+	rm -rf modules zephyr zmk
