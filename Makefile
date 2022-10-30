@@ -1,5 +1,5 @@
 ZEPHYR_BASE := config
-GITHUB_WORKSPACE
+
 # have a persistent pipeline:
 # https://stackoverflow.com/questions/16233196/makefile-to-execute-a-sequence-of-steps
 STEPDIR := target/build_steps
@@ -26,7 +26,7 @@ $(STEPDIR)/prebuild: $(STEPDIR)/init
 
 zen-shield: $(STEPDIR)/prebuild
 	@echo "building Corne-ish Zen ($(SIDE))"
-	west build --pristine -s zmk/app -b corne-ish_zen_$(SIDE) -- -DZMK_CONFIG="${GITHUB_WORKSPACE}/config"
+	west build --pristine -s zmk/app -b corne-ish_zen_$(SIDE) -- -DZMK_CONFIG="$(CURDIR)/config"
 	mkdir -p target/
 	cp build/zephyr/zmk.uf2 target/corneish_zen_$(SIDE).uf2
 	@touch $(STEPDIR)/zen-$(SIDE)
@@ -46,7 +46,7 @@ report:
 	make zen-right
 
 clean:
-	rm $(STEPDIR)/prebuild $(STEPDIR)/zen-left $(STEPDIR)/zen-right
+	rm -f target/*.uf2 $(STEPDIR)/prebuild $(STEPDIR)/zen-left $(STEPDIR)/zen-right
 
 clean-all:
 	git clean -f -e .envrc -e .direnv -d -x

@@ -11,9 +11,12 @@
 
 #define COLMAK 0
 #define NUMSYM 1
-#define EXTEND 2
-#define FUNKEY 3
-#define PLOVER 4
+#define FUNKEY 2
+#define NAVI   3
+#define MEDIA  4
+#define MOUSE  5
+#define EMPTY  6
+#define PLOVER 7
 
 / {
     behaviors {
@@ -33,50 +36,82 @@
         default_layer {
             label = "COLMAK";
             bindings = <
-   &kp     F21 &kp      Q &kp      W &kp       F &kp        P  &kp B        &kp J   &kp        L &kp       U &kp      Y &kp   SEMI  &kp   F23
-   &kp     F22 &hm LGUI A &hm LALT R &hm LCTRL S &hm LSHIFT T  &kp G        &kp M   &hm RSHIFT N &hm RCTRL E &hm RALT I &hm RGUI O  &kp   F24
-   &tog PLOVER &kp      Z &kp      X &kp       C &kp        D  &kp V        &kp K   &kp        H &kp    CMMA &kp    DOT &kp   FSLH  &kp PSCRN
-                                     &kp ESC    &mo NUMSYM    &kp SPC      &kp SPC &mo EXTEND   &kp    BSPC
+   &none       &kp      Q &kp      W &kp       F    &kp        P    &kp B              &kp J          &kp        L    &kp       U &kp      Y &kp   SEMI  &none
+   &none       &hm LGUI A &hm LALT R &hm LCTRL S    &hm LSHIFT T    &kp G              &kp M          &hm RSHIFT N    &hm RCTRL E &hm RALT I &hm RGUI O  &none
+   &tog PLOVER &kp      Z &kp      X &kp       C    &kp        D    &kp V              &kp K          &kp        H    &kp    CMMA &kp    DOT &kp   FSLH  &none
+                                     &lt MEDIA ESC  &lt NUMSYM SPC  &lt MOUSE TAB      &lt EMPTY RET  &lt NAVI  BSPC  &lt FUNKEY DEL
             >;
         };
 
         numsym_layer {
             label = "NUMSYM";
             bindings = <
-   &kp K_WWW          &kp   N1 &kp   N2 &kp    N3 &kp     N4 &kp N5       &kp N6  &kp N7     &kp N8    &kp N9    &kp N0    &none
-   &kp C_AL_PREV_TASK &kp LGUI &kp LALT &kp LCTRL &kp LSHIFT &kp TAB      &none   &kp RSHIFT &kp LBKT  &kp RBKT  &kp GRAVE &kp C_AL_NEXT_TASK
-   &kp C_AL_WORD      &none    &none    &none     &none      &none        &none   &kp SQT    &kp MINUS &kp EQUAL &kp BSLH  &none
-                           &none     &none      &kp RET      &kp RET &mo FUNKEY &kp DEL
-            >;
-        };
-
-        extended_layer {
-            label = "EXTEND";
-            bindings = <
-   &none  &kp F1 &kp F2 &kp F3 &kp F4     &kp F5        &kp F6   &kp F7    &kp F8    &kp F9    &kp F10 &none
-   &none  &none  &none  &none  &none      &none         &kp LEFT &kp DOWN  &kp UP    &kp RIGHT &none   &none
-   &none  &none  &none  &none  &none      &none         &kp HOME &kp PG_DN &kp PG_UP &kp END   &none   &none
-                        &none  &mo FUNKEY &kp RET       &none  &none  &none
+   &none      &kp   N1 &kp   N2 &kp    N3 &kp     N4 &kp N5       &kp N6   &kp N7     &kp N8    &kp N9    &kp N0    &none
+   &none      &kp LGUI &kp LALT &kp LCTRL &kp LSHIFT &kp TAB      &none    &kp RSHIFT &kp LBKT  &kp RBKT  &kp GRAVE &none
+   &none      &none    &none    &none     &none      &none        &none    &kp SQT    &kp MINUS &kp EQUAL &kp BSLH  &none
+                                &none     &none      &none        &kp RET  &kp BSPC   &kp DEL
             >;
         };
 
         function_layer {
             label = "FUNKEY";
             bindings = <
-   &kp C_AL_LOCK  &kp F1       &kp F2       &kp F3       &kp F4       &kp F5        &kp F6 &kp F7 &kp F8 &kp F9 &kp F10 &kp F11
-   &kp K_SLEEP    &none        &none        &none        &none        &none         &none  &none  &none  &none  &none   &kp F12
-   &bt BT_CLR     &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4  &none  &none  &none  &none  &none   &none
-                        &none        &none    &none     &none  &none  &none
+   &none  &kp F1  &kp F2  &kp F3  &kp F4  &kp F5        &kp F6  &kp F7  &kp F8  &kp F9  &kp F10 &none
+   &none  &kp F11 &kp F12 &kp F13 &kp F14 &kp F15       &kp F16 &kp F17 &kp F18 &kp F19 &kp F20 &none
+   &none  &kp F21 &kp F22 &kp F23 &kp F24 &none         &none   &none   &none   &none   &none   &none
+                          &none   &none   &none         &none   &none   &none
+            >;
+        };
+
+        extended_layer {
+            label = "NAVI";
+            bindings = <
+   &none  &none  &none  &none   &none   &none           &kp K_REDO &kp K_PASTE &kp K_COPY &kp K_CUT &kp K_UNDO &none
+   &none  &none  &none  &none   &none   &none           &none      &kp LEFT    &kp DOWN   &kp UP    &kp RIGHT  &none
+   &none  &none  &none  &none   &none   &none           &none      &kp HOME    &kp PG_DN  &kp PG_UP &kp END    &none
+                        &kp ESC &kp SPC &kp TAB         &none      &none       &none
+            >;
+        };
+
+
+        media_layer {
+            label = "MEDIA";
+            bindings = <
+   &none  &bt BT_CLR  &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3         &none       &none         &kp C_PREV    &kp C_NEXT    &none         &none
+   &none  &kp K_SLEEP &none        &none        &none        &kp C_ASPECT         &none       &kp C_REWIND  &kp C_VOL_DN  &kp C_VOL_UP  &kp C_FF      &none
+   &none  &tog PLOVER &none        &none        &none        &none                &none       &kp C_BRI_MIN &kp C_BRI_DEC &kp C_BRI_INC &kp C_BRI_MAX &none
+                                  &none         &none        &none                &kp C_STOP  &kp C_PLAY_PAUSE &kp C_MUTE
+            >;
+        };
+
+        mouse_layer {
+            label = "MOUSE";
+            bindings = <
+   &none  &none      &none        &none        &none        &none                &none    &none     &none     &none     &none   &none
+   &none  &none      &none        &none        &none        &none                &none    &none     &none     &none     &none   &none
+   &none  &none      &none        &none        &none        &none                &none    &none     &none     &none     &none   &none
+                                  &none        &none        &none                &none    &none     &none
+            >;
+        };
+
+        empty_layer {
+            label = "EMPTY";
+            bindings = <
+   &none  &none      &none        &none        &none        &none                &none    &none     &none     &none     &none   &none
+   &none  &none      &none        &none        &none        &none                &none    &none     &none     &none     &none   &none
+   &none  &none      &none        &none        &none        &none                &none    &none     &none     &none     &none   &none
+                                  &none        &none        &none                &none    &none     &none
             >;
         };
 
         plover_layer {
             label = "PLOVER";
             bindings = <
-   &none        &kp  PLV_S1  &kp PLV_TL  &kp PLV_PL  &kp PLV_HL  &kp PLV_ST1       &kp PLV_ST3  &kp PLV_FR  &kp PLV_PR  &kp PLV_LR  &kp PLV_TR  &kp PLV_DR
-   &none        &kp  PLV_S2  &kp PLV_KL  &kp PLV_WL  &kp PLV_RL  &kp PLV_ST2       &kp PLV_ST4  &kp PLV_RR  &kp PLV_BR  &kp PLV_GR  &kp PLV_SR  &kp PLV_ZR
-   &tog COLMAK  &kp  PLV_X1  &kp PLV_X2  &kp PLV_X3  &kp PLV_X4  &kp PLV_X5        &kp PLV_X6   &kp PLV_X7  &kp PLV_X7  &kp PLV_X8  &kp PLV_X9  &none
-                                          &kp PLV_A   &kp PLV_O  &kp PLV_NM        &kp PLV_NM   &kp PLV_E   &kp PLV_U
+   &none        &kp  PLV_SL  &kp PLV_TL  &kp PLV_PL  &kp PLV_HL  &kp PLV_ST        &kp PLV_FR  &kp PLV_PR  &kp PLV_LR  &kp PLV_TR  &kp PLV_DR  &none
+   &none        &kp  PLV_SL  &kp PLV_KL  &kp PLV_WL  &kp PLV_RL  &kp PLV_ST        &kp PLV_RR  &kp PLV_BR  &kp PLV_GR  &kp PLV_SR  &kp PLV_ZR  &none
+   &to  COLMAK  &to  COLMAK  &none       &none       &none       &none             &kp PLV_ST  &none       &none       &none       &none       &none
+                                         &kp PLV_A   &kp PLV_O   &kp PLV_NM        &kp PLV_E   &kp PLV_U   &kp PLV_NM
+
             >;
         };
 

@@ -8,6 +8,7 @@ manifest:
     - name: zmk
       remote: stites
       revision: zen-on-main+969+plover-hid
+      #revision: zen-on-main+969+plover+mouse #<<< doesn't work!
       import: app/west.yml
   self:
     path: config
