@@ -4,6 +4,7 @@ ZEPHYR_BASE := config
 # https://stackoverflow.com/questions/16233196/makefile-to-execute-a-sequence-of-steps
 STEPDIR := target/build_steps
 CONFDIR := target/config
+OUTDIR  := target
 ZEN_STEPS := init prebuild \
 	full-corne-ish_zen-3x5 \
 	zen-3x5-init zen-3x5-clean \
@@ -16,11 +17,11 @@ ZEN_STEPS := init prebuild \
 	all report clean clean-all \
 	zen-3x5 zen-3x6
 
-$(ZEN_STEPS): %: $(STEPDIR)/%
-
 all: # these cannot be run in parallel
 	make zen-3x6
 	make zen-3x5
+
+$(ZEN_STEPS): %: $(STEPDIR)/%
 
 zen-3x5:
 	make LAYOUT=3x5 $(STEPDIR)/full-corne-ish_zen-3x5
@@ -30,11 +31,10 @@ zen-3x6:
 
 # we want this step which includes the transient init and clean steps
 $(STEPDIR)/full-corne-ish_zen-$(LAYOUT):
-	make $(STEPDIR)/zen-$(LAYOUT)-init
 	make $(STEPDIR)/prebuild # if west.yml splits repos, you'll have to cache
-	make SIDE=left LAYOUT=$(LAYOUT) zen-shield
-	make SIDE=right LAYOUT=$(LAYOUT) zen-shield
-	make $(STEPDIR)/zen-$(LAYOUT)-clean
+	make $(STEPDIR)/zen-$(LAYOUT)-init
+	make SIDE=left $(OUTDIR)/corneish_zen_$(LAYOUT)_left.uf2
+	make SIDE=right $(OUTDIR)/corneish_zen_$(LAYOUT)_right.uf2
 
 # use this if starting from a fresh repo
 $(STEPDIR)/init:
@@ -49,82 +49,67 @@ $(STEPDIR)/prebuild: $(STEPDIR)/init
 	west zephyr-export
 	@touch $@
 
-$(STEPDIR)/zen-$(LAYOUT)-init: $(CONFDIR)/zen-$(LAYOUT)/corneish_zen.keymap $(CONFDIR)/zen-$(LAYOUT)/corneish_zen.conf $(CONFDIR)/zen-$(LAYOUT)/corneish_zen_left.keymap $(CONFDIR)/zen-$(LAYOUT)/corneish_zen_right.keymap $(CONFDIR)/zen-$(LAYOUT)/west.yml
-	@echo "moving files for Corne-ish Zen ($(LAYOUT))"
-	rm -f $(STEPDIR)/zen-$(LAYOUT)-clean
-	mkdir -p config/corneish_zen/$(LAYOUT)/
-ifeq ($(LAYOUT),3x5)
-	cat config/corneish_zen/generic.keymap.in | sed 's/<<<TYPE>>>/five_column/' | sed 's/<<<EXTRA>>>//g'       > config/corneish_zen/$(LAYOUT)/corneish_zen.keymap
-else
-	cat config/corneish_zen/generic.keymap.in | sed 's/<<<TYPE>>>/default/'     | sed 's/<<<EXTRA>>>/\&none/g' > config/corneish_zen/$(LAYOUT)/corneish_zen.keymap
-endif
-# should just make this part of the build artifacts but I am lazy
-	cp config/corneish_zen/generic.conf            config/corneish_zen/$(LAYOUT)/corneish_zen.conf
-	cp config/corneish_zen/generic_left.keymap.in  config/corneish_zen/$(LAYOUT)/corneish_zen_left.keymap
-	cp config/corneish_zen/generic_right.keymap.in config/corneish_zen/$(LAYOUT)/corneish_zen_right.keymap
-	cp config/corneish_zen/generic_west.yml        config/corneish_zen/$(LAYOUT)/west.yml
-	cp config/corneish_zen/$(LAYOUT)/* config/
-	@touch $@
-
-$(CONFDIR)/zen-$(LAYOUT)/corneish_zen.keymap:
+$(CONFDIR)/zen-$(LAYOUT):
+	mkdir -p $(CONFDIR)/zen-$(LAYOUT)
+$(CONFDIR)/zen-$(LAYOUT)/corneish_zen.conf:         $(CONFDIR)/zen-$(LAYOUT)
+	cp config/corneish_zen/generic.conf               $(CONFDIR)/zen-$(LAYOUT)/corneish_zen.conf
+$(CONFDIR)/zen-$(LAYOUT)/corneish_zen_left.keymap:  $(CONFDIR)/zen-$(LAYOUT)
+	cp config/corneish_zen/generic_left.keymap.in     $(CONFDIR)/zen-$(LAYOUT)/corneish_zen_left.keymap
+$(CONFDIR)/zen-$(LAYOUT)/corneish_zen_right.keymap: $(CONFDIR)/zen-$(LAYOUT)
+	cp config/corneish_zen/generic_right.keymap.in    $(CONFDIR)/zen-$(LAYOUT)/corneish_zen_right.keymap
+$(CONFDIR)/zen-$(LAYOUT)/west.yml:                  $(CONFDIR)/zen-$(LAYOUT)
+	cp config/corneish_zen/generic_west.yml           $(CONFDIR)/zen-$(LAYOUT)/west.yml
+$(CONFDIR)/zen-$(LAYOUT)/corneish_zen.keymap:       $(CONFDIR)/zen-$(LAYOUT)
 ifeq ($(LAYOUT),3x5)
 	cat config/corneish_zen/generic.keymap.in | sed 's/<<<TYPE>>>/five_column/' | sed 's/<<<EXTRA>>>//g'       > $(CONFDIR)/zen-$(LAYOUT)/corneish_zen.keymap
 else
 	cat config/corneish_zen/generic.keymap.in | sed 's/<<<TYPE>>>/default/'     | sed 's/<<<EXTRA>>>/\&none/g' > $(CONFDIR)/zen-$(LAYOUT)/corneish_zen.keymap
 endif
-$(CONFDIR)/zen-$(LAYOUT)/corneish_zen.conf:
-	cp config/corneish_zen/generic.conf            $(CONFDIR)/zen-$(LAYOUT)/corneish_zen.conf
-$(CONFDIR)/zen-$(LAYOUT)/corneish_zen_left.keymap:
-	cp config/corneish_zen/generic_left.keymap.in  $(CONFDIR)/zen-$(LAYOUT)/corneish_zen_left.keymap
-$(CONFDIR)/zen-$(LAYOUT)/corneish_zen_right.keymap:
-	cp config/corneish_zen/generic_right.keymap.in $(CONFDIR)/zen-$(LAYOUT)/corneish_zen_right.keymap
-$(CONFDIR)/zen-$(LAYOUT)/west.yml:
-	cp config/corneish_zen/generic_west.yml        $(CONFDIR)/zen-$(LAYOUT)/west.yml
+
+$(STEPDIR)/zen-$(LAYOUT)-init: $(CONFDIR)/zen-$(LAYOUT)/corneish_zen.keymap $(CONFDIR)/zen-$(LAYOUT)/corneish_zen.conf $(CONFDIR)/zen-$(LAYOUT)/corneish_zen_left.keymap $(CONFDIR)/zen-$(LAYOUT)/corneish_zen_right.keymap $(CONFDIR)/zen-$(LAYOUT)/west.yml
+	@echo "moving files for Corne-ish Zen ($(LAYOUT))"
+	rm -f $(STEPDIR)/zen-$(LAYOUT)-clean
+	@touch $@
 
 $(STEPDIR)/zen-$(LAYOUT)-clean:
 	@echo "cleaning files from Corne-ish Zen ($(LAYOUT))"
 ifneq (,$(wildcard $(STEPDIR)/zen-$(LAYOUT)-init))
 	test -f $(STEPDIR)/zen-$(LAYOUT)-init
-	rm -f config/corne-ish_zen*.keymap config/corne-ish_zen.conf west.yml
+	rm -f $(CONFDIR)/zen-$(LAYOUT)
 	@touch $@
 else
 	@echo "...$(STEPDIR)/zen-$(LAYOUT)-init not found! Aborting!"
 	exit 1
 endif
 
-zen-shield: $(STEPDIR)/prebuild
+$(OUTDIR)/corneish_zen_$(LAYOUT)_$(SIDE).uf2: $(STEPDIR)/zen-$(LAYOUT)-init
 	@echo "building Corne-ish Zen ($(LAYOUT) $(SIDE))"
 ifeq ($(LAYOUT),3x5)
-	#west build --pristine -s zmk/app -b corneish_zen_v2_$(SIDE) -- -DZMK_CONFIG="$(CURDIR)/config"
-	west build --pristine -s zmk/app -b corneish_zen_v2_$(SIDE) -- -DZMK_CONFIG="$(CURDIR)/config"
+	west build --pristine -s zmk/app -b corneish_zen_v2_$(SIDE) -- -DZMK_CONFIG="$(PWD)/$(CONFDIR)/zen-$(LAYOUT)"
 else
-	west build --pristine -s zmk/app -b corneish_zen_v1_$(SIDE) -- -DZMK_CONFIG="$(CURDIR)/config"
+	west build --pristine -s zmk/app -b corneish_zen_v1_$(SIDE) -- -DZMK_CONFIG="$(PWD)/$(CONFDIR)/zen-$(LAYOUT)"
 endif
-	mkdir -p target/
-	cp build/zephyr/zmk.uf2 target/corneish_zen_$(LAYOUT)_$(SIDE).uf2
+	mkdir -p $(OUTDIR)/
+	cp build/zephyr/zmk.uf2 $(OUTDIR)/corneish_zen_$(LAYOUT)_$(SIDE).uf2
 	@touch $(STEPDIR)/zen-$(LAYOUT)-$(SIDE)
 
 # use this if you want stats from your board
-report:
-	@echo "DTS file"
-	cat -n build/zephyr/zephyr.dts.pre
-	@echo "Corne-ish Zen Left Kconfig file"
-	cat build/zephyr/.config | grep -v "^#" | grep -v "^$"
-	make zen-3x6-right
+#report:
+#	@echo "DTS file"
+#	cat -n build/zephyr/zephyr.dts.pre
+#	@echo "Corne-ish Zen Left Kconfig file"
+#	cat build/zephyr/.config | grep -v "^#" | grep -v "^$"
+#	make zen-3x6-right
 
-clean-3x6:
-	rm -f ./target/build_steps/zen-3x6*
-	rm -f ./config/corneish_zen/3x6/*
-
-clean-3x5:
-	rm -f ./target/build_steps/zen-3x5*
-	rm -f ./config/corneish_zen/3x5/*
+clean-$(LAYOUT):
+	rm -f  $(STEPDIR)/zen-$(LAYOUT)*
+	rm -rf $(CONFDIR)/zen-$(LAYOUT)
+	rm -f $(OUTDIR)/corneish_zen_$(LAYOUT)_*.uf2
 
 clean:
-	make clean-3x5
-	make clean-3x6
 	rm -f target/*.uf2
-	rm -f config/*.keymap config/*.conf
+	make LAYOUT=3x5 clean-3x5
+	make LAYOUT=3x6 clean-3x6
 	fd '[^i][^n][^i][^t]' ./target/build_steps/ -x rm
 
 clean-all: clean
