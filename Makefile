@@ -3,6 +3,7 @@ ZEPHYR_BASE := config
 # have a persistent pipeline:
 # https://stackoverflow.com/questions/16233196/makefile-to-execute-a-sequence-of-steps
 STEPDIR := target/build_steps
+CONFDIR := target/config
 ZEN_STEPS := init prebuild \
 	full-corne-ish_zen-3x5 \
 	zen-3x5-init zen-3x5-clean \
@@ -48,20 +49,37 @@ $(STEPDIR)/prebuild: $(STEPDIR)/init
 	west zephyr-export
 	@touch $@
 
-$(STEPDIR)/zen-$(LAYOUT)-init:
+$(STEPDIR)/zen-$(LAYOUT)-init: $(CONFDIR)/zen-$(LAYOUT)/corneish_zen.keymap $(CONFDIR)/zen-$(LAYOUT)/corneish_zen.conf $(CONFDIR)/zen-$(LAYOUT)/corneish_zen_left.keymap $(CONFDIR)/zen-$(LAYOUT)/corneish_zen_right.keymap $(CONFDIR)/zen-$(LAYOUT)/west.yml
 	@echo "moving files for Corne-ish Zen ($(LAYOUT))"
 	rm -f $(STEPDIR)/zen-$(LAYOUT)-clean
+	mkdir -p config/corneish_zen/$(LAYOUT)/
 ifeq ($(LAYOUT),3x5)
 	cat config/corneish_zen/generic.keymap.in | sed 's/<<<TYPE>>>/five_column/' | sed 's/<<<EXTRA>>>//g'       > config/corneish_zen/$(LAYOUT)/corneish_zen.keymap
 else
 	cat config/corneish_zen/generic.keymap.in | sed 's/<<<TYPE>>>/default/'     | sed 's/<<<EXTRA>>>/\&none/g' > config/corneish_zen/$(LAYOUT)/corneish_zen.keymap
 endif
-	cp config/corneish_zen/generic.conf            config/corneish_zen/$(LAYOUT)/cornish_zen.conf
-	cp config/corneish_zen/generic_left.keymap.in  config/corneish_zen/$(LAYOUT)/cornish_zen_left.keymap
-	cp config/corneish_zen/generic_right.keymap.in config/corneish_zen/$(LAYOUT)/cornish_zen_right.keymap
+# should just make this part of the build artifacts but I am lazy
+	cp config/corneish_zen/generic.conf            config/corneish_zen/$(LAYOUT)/corneish_zen.conf
+	cp config/corneish_zen/generic_left.keymap.in  config/corneish_zen/$(LAYOUT)/corneish_zen_left.keymap
+	cp config/corneish_zen/generic_right.keymap.in config/corneish_zen/$(LAYOUT)/corneish_zen_right.keymap
 	cp config/corneish_zen/generic_west.yml        config/corneish_zen/$(LAYOUT)/west.yml
 	cp config/corneish_zen/$(LAYOUT)/* config/
 	@touch $@
+
+$(CONFDIR)/zen-$(LAYOUT)/corneish_zen.keymap:
+ifeq ($(LAYOUT),3x5)
+	cat config/corneish_zen/generic.keymap.in | sed 's/<<<TYPE>>>/five_column/' | sed 's/<<<EXTRA>>>//g'       > $(CONFDIR)/zen-$(LAYOUT)/corneish_zen.keymap
+else
+	cat config/corneish_zen/generic.keymap.in | sed 's/<<<TYPE>>>/default/'     | sed 's/<<<EXTRA>>>/\&none/g' > $(CONFDIR)/zen-$(LAYOUT)/corneish_zen.keymap
+endif
+$(CONFDIR)/zen-$(LAYOUT)/corneish_zen.conf:
+	cp config/corneish_zen/generic.conf            $(CONFDIR)/zen-$(LAYOUT)/corneish_zen.conf
+$(CONFDIR)/zen-$(LAYOUT)/corneish_zen_left.keymap:
+	cp config/corneish_zen/generic_left.keymap.in  $(CONFDIR)/zen-$(LAYOUT)/corneish_zen_left.keymap
+$(CONFDIR)/zen-$(LAYOUT)/corneish_zen_right.keymap:
+	cp config/corneish_zen/generic_right.keymap.in $(CONFDIR)/zen-$(LAYOUT)/corneish_zen_right.keymap
+$(CONFDIR)/zen-$(LAYOUT)/west.yml:
+	cp config/corneish_zen/generic_west.yml        $(CONFDIR)/zen-$(LAYOUT)/west.yml
 
 $(STEPDIR)/zen-$(LAYOUT)-clean:
 	@echo "cleaning files from Corne-ish Zen ($(LAYOUT))"
@@ -96,11 +114,15 @@ report:
 
 clean-3x6:
 	rm -f ./target/build_steps/zen-3x6*
+	rm -f ./config/corneish_zen/3x6/*
 
 clean-3x5:
 	rm -f ./target/build_steps/zen-3x5*
+	rm -f ./config/corneish_zen/3x5/*
 
 clean:
+	make clean-3x5
+	make clean-3x6
 	rm -f target/*.uf2
 	rm -f config/*.keymap config/*.conf
 	fd '[^i][^n][^i][^t]' ./target/build_steps/ -x rm
