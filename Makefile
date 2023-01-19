@@ -50,6 +50,11 @@ $(STEPDIR)/prebuild: $(STEPDIR)/init
 $(STEPDIR)/zen-$(LAYOUT)-init:
 	@echo "moving files for Corne-ish Zen ($(LAYOUT))"
 	rm -f $(STEPDIR)/zen-$(LAYOUT)-clean
+ifeq ($(LAYOUT),3x5)
+	cat config/corne-ish_zen/generic.keymap.in | sed 's/<<<TYPE>>>/five_column/' | sed 's/<<<EXTRA>>>//g'       > config/corne-ish_zen/$(LAYOUT)/corne-ish_zen.keymap
+else
+	cat config/corne-ish_zen/generic.keymap.in | sed 's/<<<TYPE>>>/default/'     | sed 's/<<<EXTRA>>>/\&none/g' > config/corne-ish_zen/$(LAYOUT)/corne-ish_zen.keymap
+endif
 	cp config/corne-ish_zen/$(LAYOUT)/* config/
 	@touch $@
 
