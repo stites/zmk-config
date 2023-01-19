@@ -38,6 +38,7 @@ $(STEPDIR)/full-corne-ish_zen-$(LAYOUT):
 # use this if starting from a fresh repo
 $(STEPDIR)/init:
 	mkdir -p $(STEPDIR)
+	@echo "initializing west..."
 	west init -l $(ZEPHYR_BASE) || true
 	@touch $@
 
@@ -51,11 +52,15 @@ $(STEPDIR)/zen-$(LAYOUT)-init:
 	@echo "moving files for Corne-ish Zen ($(LAYOUT))"
 	rm -f $(STEPDIR)/zen-$(LAYOUT)-clean
 ifeq ($(LAYOUT),3x5)
-	cat config/corne-ish_zen/generic.keymap.in | sed 's/<<<TYPE>>>/five_column/' | sed 's/<<<EXTRA>>>//g'       > config/corne-ish_zen/$(LAYOUT)/corne-ish_zen.keymap
+	cat config/corneish_zen/generic.keymap.in | sed 's/<<<TYPE>>>/five_column/' | sed 's/<<<EXTRA>>>//g'       > config/corneish_zen/$(LAYOUT)/corneish_zen.keymap
 else
-	cat config/corne-ish_zen/generic.keymap.in | sed 's/<<<TYPE>>>/default/'     | sed 's/<<<EXTRA>>>/\&none/g' > config/corne-ish_zen/$(LAYOUT)/corne-ish_zen.keymap
+	cat config/corneish_zen/generic.keymap.in | sed 's/<<<TYPE>>>/default/'     | sed 's/<<<EXTRA>>>/\&none/g' > config/corneish_zen/$(LAYOUT)/corneish_zen.keymap
 endif
-	cp config/corne-ish_zen/$(LAYOUT)/* config/
+	cp config/corneish_zen/generic.conf            config/corneish_zen/$(LAYOUT)/cornish_zen.conf
+	cp config/corneish_zen/generic_left.keymap.in  config/corneish_zen/$(LAYOUT)/cornish_zen_left.keymap
+	cp config/corneish_zen/generic_right.keymap.in config/corneish_zen/$(LAYOUT)/cornish_zen_right.keymap
+	cp config/corneish_zen/generic_west.yml        config/corneish_zen/$(LAYOUT)/west.yml
+	cp config/corneish_zen/$(LAYOUT)/* config/
 	@touch $@
 
 $(STEPDIR)/zen-$(LAYOUT)-clean:
@@ -72,10 +77,10 @@ endif
 zen-shield: $(STEPDIR)/prebuild
 	@echo "building Corne-ish Zen ($(LAYOUT) $(SIDE))"
 ifeq ($(LAYOUT),3x5)
-#	west build --pristine -s zmk/app -b corne-ish_zen_v2_$(SIDE) -- -DZMK_CONFIG="$(CURDIR)/config"
-	west build --pristine -s zmk/app -b corne-ish_zen_$(SIDE) -- -DZMK_CONFIG="$(CURDIR)/config"
+	#west build --pristine -s zmk/app -b corneish_zen_v2_$(SIDE) -- -DZMK_CONFIG="$(CURDIR)/config"
+	west build --pristine -s zmk/app -b corneish_zen_v2_$(SIDE) -- -DZMK_CONFIG="$(CURDIR)/config"
 else
-	west build --pristine -s zmk/app -b corne-ish_zen_$(SIDE) -- -DZMK_CONFIG="$(CURDIR)/config"
+	west build --pristine -s zmk/app -b corneish_zen_v1_$(SIDE) -- -DZMK_CONFIG="$(CURDIR)/config"
 endif
 	mkdir -p target/
 	cp build/zephyr/zmk.uf2 target/corneish_zen_$(LAYOUT)_$(SIDE).uf2
