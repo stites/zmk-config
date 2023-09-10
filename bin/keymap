@@ -1,0 +1,1 @@
+cat config/corneish_zen/generic.keymap.in | awk '/keymap/ {p=1;next}p; gsub("<<<EXTRA>>>", "");' | awk '!/^.*\/\//' | awk '!/<<<EXTRA>>>/' | awk '{sub(/^ {8}/, "");}1' | less
